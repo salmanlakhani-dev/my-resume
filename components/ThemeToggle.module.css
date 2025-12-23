@@ -1,0 +1,52 @@
+.themeToggle {
+  position: fixed;
+  top: 2rem;
+  right: 2rem;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: var(--color-bg-glass);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  z-index: 1000;
+  box-shadow: var(--shadow-md);
+}
+
+.themeToggle:hover {
+  transform: scale(1.1) rotate(10deg);
+  background: var(--color-bg-glass-hover);
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: var(--shadow-glow);
+}
+
+.icon {
+  width: 24px;
+  height: 24px;
+  color: var(--color-accent-primary);
+  transition: all var(--transition-normal);
+}
+
+.themeToggle:hover .icon {
+  color: var(--color-accent-secondary);
+  transform: rotate(20deg);
+}
+
+@media (max-width: 768px) {
+  .themeToggle {
+    top: 1rem;
+    right: 1rem;
+    width: 45px;
+    height: 45px;
+  }
+  
+  .icon {
+    width: 20px;
+    height: 20px;
+  }
+}
