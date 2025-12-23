@@ -56,40 +56,6 @@ const experiences = [
   }
 ];
 
-// Recursive component to create nested circles
-const NestedCircle = ({ experience, index, total }) => {
-  const circleRef = useRef(null);
-  const isLast = index === total - 1;
-  
-  return (
-    <div 
-      ref={circleRef}
-      className={`${styles.expandingCircle} expanding-circle-${index}`}
-      data-index={index}
-    >
-      <div className={styles.itemContent}>
-        <div className={styles.experienceHeader}>
-          <div>
-            <h3 className={styles.position}>{experience.position}</h3>
-            <h4 className={styles.company}>{experience.company}</h4>
-          </div>
-          <span className={styles.duration}>{experience.duration}</span>
-        </div>
-        <p className={styles.description}>{experience.description}</p>
-      </div>
-      
-      {/* Recursively render next circle if not last */}
-      {!isLast && (
-        <NestedCircle 
-          experience={experiences[index + 1]} 
-          index={index + 1} 
-          total={total}
-        />
-      )}
-    </div>
-  );
-};
-
 export default function Experience() {
   const shapesRef = useRef([]);
   const sectionRef = useRef(null);
@@ -119,62 +85,43 @@ export default function Experience() {
       });
     }
 
-    // Nested circle expansion animation
+    // Circle expansion animation
     if (typeof window !== 'undefined' && timelineRef.current) {
       experiences.forEach((exp, index) => {
         const circle = document.querySelector(`.expanding-circle-${index}`);
         if (!circle) return;
 
         const content = circle.querySelector(`.${styles.itemContent}`);
-        const nestedCircle = circle.querySelector(`.expanding-circle-${index + 1}`);
 
         const tl = gsap.timeline({
           scrollTrigger: {
             trigger: circle,
-            start: 'top 70%',
-            end: 'top 20%',
+            start: `top ${80 - (index * 20)}%`,  // First starts at bottom, others progressively earlier
+            end: `top ${10 - (index * 30)}%`,         // First ends at 10%, others progressively earlier
             scrub: 1.5,
+            markers: false, 
           }
         });
 
-        // 1. Expand circle from 24px to full width
+        // 1. Expand circle horizontally from 24px to full width
         tl.to(circle, {
-          maxWidth: 900,
-          maxHeight: 'none',
           width: 900,
-          height: 'auto',
           borderRadius: '16px',
           background: 'rgba(255, 255, 255, 0.03)',
           backdropFilter: 'blur(10px)',
           border: '1px solid rgba(255, 255, 255, 0.1)',
           boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)',
           marginBottom: index < experiences.length - 1 ? 48 : 0,
-          duration: 0.6,
-        });
-
-        // 2. Show content
-        tl.call(() => {
-          if (content) content.style.display = 'block';
-        }, null, 0.4);
-
-        // 3. Move nested circle to bottom (if it exists)
-        if (nestedCircle) {
-          tl.fromTo(nestedCircle, 
-            {
-              position: 'absolute',
-              top: 0,
-              bottom: 'auto',
-            },
-            {
-              top: 'auto',
-              bottom: -12,
-              left: '50%',
-              transform: 'translateX(-50%)',
-              duration: 0.3,
-            }, 
-            0.6
-          );
-        }
+          duration: 0.5,
+        })
+        // 2. Smoothly reveal content vertically (no jerk)
+        .to(content, {
+          opacity: 1,
+          maxHeight: 1000,
+          paddingTop: '2rem',
+          paddingBottom: '2rem',
+          duration: 0.5,
+        }, '-=0.2'); // Start slightly before horizontal expansion ends
       });
     }
 
@@ -216,12 +163,25 @@ export default function Experience() {
           {/* Timeline line */}
           <div className={styles.timelineLine}></div>
           
-          {/* Start with first nested circle containing all others */}
-          <NestedCircle 
-            experience={experiences[0]} 
-            index={0} 
-            total={experiences.length}
-          />
+          {/* Render all circles as siblings */}
+          {experiences.map((exp, index) => (
+            <div 
+              key={exp.id}
+              className={`${styles.expandingCircle} expanding-circle-${index}`}
+              data-index={index}
+            >
+              <div className={styles.itemContent}>
+                <div className={styles.experienceHeader}>
+                  <div>
+                    <h3 className={styles.position}>{exp.position}</h3>
+                    <h4 className={styles.company}>{exp.company}</h4>
+                  </div>
+                  <span className={styles.duration}>{exp.duration}</span>
+                </div>
+                <p className={styles.description}>{exp.description}</p>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </section>
