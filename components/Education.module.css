@@ -34,11 +34,9 @@
   position: absolute;
   inset: 0;
   border-radius: 12px;
-  background: radial-gradient(
-    800px circle at var(--mouse-x) var(--mouse-y),
-    rgba(99, 102, 241, 0.6),
-    transparent 40%
-  );
+  background: radial-gradient(800px circle at var(--mouse-x) var(--mouse-y),
+      rgba(99, 102, 241, 0.6),
+      transparent 40%);
   opacity: 0;
   transition: opacity 0.5s ease;
   pointer-events: none;
@@ -71,11 +69,10 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(
-    600px circle at var(--mouse-x) var(--mouse-y),
-    rgba(99, 102, 241, 0.15), /* Harmonized with outer glow (Indigo/Violet) */
-    transparent 40%
-  );
+  background: radial-gradient(600px circle at var(--mouse-x) var(--mouse-y),
+      rgba(99, 102, 241, 0.15),
+      /* Harmonized with outer glow (Indigo/Violet) */
+      transparent 40%);
   opacity: 0;
   transition: opacity 0.5s ease;
   pointer-events: none;
@@ -112,15 +109,25 @@
 .icon {
   font-size: 3rem;
   opacity: 0.8;
+  filter: grayscale(100%);
   transition: all 0.3s ease;
   user-select: none;
   animation: float 3s ease-in-out infinite;
 }
 
+.cardWrapper:hover .icon {
+  filter: grayscale(0%);
+  transform: scale(1.1);
+  opacity: 1;
+}
+
 @keyframes float {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateY(0);
   }
+
   50% {
     transform: translateY(-10px);
   }
@@ -174,11 +181,11 @@
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: auto;
   }
-  
+
   .cardWrapper {
     min-height: 340px;
   }
-  
+
   .cardContent {
     min-height: 338px;
   }
@@ -186,40 +193,43 @@
 
 @media (max-width: 768px) {
   .education {
-    padding: 3rem 1.5rem; /* Add horizontal padding */
+    padding: 3rem 1.5rem;
+    /* Add horizontal padding */
   }
 
   .educationGrid {
     grid-template-columns: 1fr;
     grid-template-rows: auto;
-    width: 100%; /* Ensure it stays within padded container */
+    width: 100%;
+    /* Ensure it stays within padded container */
   }
-  
+
   .cardWrapper {
-    min-height: auto; /* Allow flexible height */
+    min-height: auto;
+    /* Allow flexible height */
   }
-  
+
   .cardContent {
     min-height: auto;
     padding: 1.5rem 1rem;
   }
-  
+
   .icon {
     font-size: 2.5rem;
   }
-  
+
   .degree {
     font-size: 1.1rem;
   }
-  
+
   .institution {
     font-size: 0.95rem;
   }
-  
+
   .field {
     font-size: 0.85rem;
   }
-  
+
   .description {
     font-size: 0.8rem;
   }

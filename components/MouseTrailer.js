@@ -23,7 +23,7 @@ export default function MouseTrailer() {
       const dist = Math.hypot(clientX - lastSpawnPos.current.x, clientY - lastSpawnPos.current.y);
       
       // Spawn icon if moved enough distance and enough time passed
-      if (now - lastSpawnTime.current > 100 && dist > 30) {
+      if (now - lastSpawnTime.current > 200 && dist > 30) {
         spawnItem(clientX, clientY);
         lastSpawnTime.current = now;
         lastSpawnPos.current = { x: clientX, y: clientY };
@@ -79,7 +79,7 @@ export default function MouseTrailer() {
       .to(item, {
         y: `+=${50 + Math.random() * 50}`,
         opacity: 0,
-        duration: 1.5,
+        duration: .5,
         ease: 'power2.in',
         rotation: `+=${Math.random() * 90 - 45}`
       }, '>'); 
