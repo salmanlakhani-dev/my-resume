@@ -1,39 +1,119 @@
 .education {
   background: var(--color-bg-primary);
+  padding: 4rem 0;
 }
 
 .educationGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
-  max-width: 1000px;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 1rem;
+  max-width: 1200px;
   margin: 0 auto;
 }
 
-.educationCard {
-  text-align: center;
-  padding: 2.5rem 2rem;
+/* Outer wrapper - creates border effect with synchronized glow */
+.cardWrapper {
   position: relative;
+  border-radius: 12px;
+  background: var(--color-bg-glass);
+  padding: 1px;
+  overflow: hidden;
+  min-height: 320px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.cardWrapper:hover {
+  transform: translateY(-2px);
+}
+
+/* Outer glow - initially hidden, shown when interacting with the grid */
+.cardWrapper::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  background: radial-gradient(
+    800px circle at var(--mouse-x) var(--mouse-y),
+    rgba(99, 102, 241, 0.6),
+    transparent 40%
+  );
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+  will-change: opacity;
+}
+
+/* Show glow on all cards when hovering the GRID */
+.educationGrid:hover .cardWrapper::before {
+  opacity: 1;
+}
+
+/* Inner content - dark gray card with full content */
+.cardContent {
+  position: relative;
+  background: var(--color-bg-secondary);
+  border-radius: 11px;
+  height: 100%;
+  min-height: 318px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: center;
+  padding: 2rem 1.5rem;
   overflow: hidden;
 }
 
-.educationCard::before {
+/* Inner glow - local spotlight */
+.cardContent::before {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: var(--gradient-primary);
+  inset: 0;
+  background: radial-gradient(
+    600px circle at var(--mouse-x) var(--mouse-y),
+    rgba(99, 102, 241, 0.15), /* Harmonized with outer glow (Indigo/Violet) */
+    transparent 40%
+  );
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+  will-change: opacity;
+  z-index: 0;
 }
 
+.educationGrid:hover .cardContent::before {
+  opacity: 1;
+}
+
+/* Highlight scale on hover */
+.cardWrapper:hover .cardContent .icon {
+  opacity: 1;
+  transform: scale(1.05);
+}
+
+/* Content elements need z-index to appear above glow */
+.iconWrapper,
+.degree,
+.institution,
+.field,
+.duration,
+.description {
+  position: relative;
+  z-index: 1;
+}
+
+/* Icon styling */
 .iconWrapper {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 .icon {
   font-size: 3rem;
-  display: inline-block;
+  opacity: 0.8;
+  transition: all 0.3s ease;
+  user-select: none;
   animation: float 3s ease-in-out infinite;
 }
 
@@ -46,17 +126,19 @@
   }
 }
 
+/* Content styling */
 .degree {
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   background: var(--gradient-primary);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
 }
 
 .institution {
-  font-size: 1.125rem;
+  font-size: 1rem;
   color: var(--color-text-primary);
   margin-bottom: 0.5rem;
   font-weight: 600;
@@ -64,29 +146,81 @@
 
 .field {
   color: var(--color-text-secondary);
-  margin-bottom: 1rem;
-  font-size: 1rem;
+  margin-bottom: 0.75rem;
+  font-size: 0.9rem;
+  line-height: 1.4;
 }
 
 .duration {
   display: inline-block;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   color: var(--color-accent-primary);
   background: rgba(99, 102, 241, 0.1);
-  padding: 0.5rem 1rem;
+  padding: 0.4rem 0.8rem;
   border-radius: var(--border-radius-sm);
-  margin-bottom: 1rem;
+  margin-bottom: 0.75rem;
 }
 
 .description {
   color: var(--color-text-muted);
-  font-size: 0.95rem;
-  line-height: 1.6;
-  margin-top: 1rem;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  margin-top: 0.5rem;
+}
+
+/* Responsive design */
+@media (max-width: 1024px) {
+  .educationGrid {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: auto;
+  }
+  
+  .cardWrapper {
+    min-height: 340px;
+  }
+  
+  .cardContent {
+    min-height: 338px;
+  }
 }
 
 @media (max-width: 768px) {
+  .education {
+    padding: 3rem 1.5rem; /* Add horizontal padding */
+  }
+
   .educationGrid {
     grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    width: 100%; /* Ensure it stays within padded container */
+  }
+  
+  .cardWrapper {
+    min-height: auto; /* Allow flexible height */
+  }
+  
+  .cardContent {
+    min-height: auto;
+    padding: 1.5rem 1rem;
+  }
+  
+  .icon {
+    font-size: 2.5rem;
+  }
+  
+  .degree {
+    font-size: 1.1rem;
+  }
+  
+  .institution {
+    font-size: 0.95rem;
+  }
+  
+  .field {
+    font-size: 0.85rem;
+  }
+  
+  .description {
+    font-size: 0.8rem;
   }
 }

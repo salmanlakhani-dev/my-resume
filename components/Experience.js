@@ -69,60 +69,74 @@ export default function Experience() {
       shapesRef.current.forEach((shape, index) => {
         if (shape) {
           const direction = index % 2 === 0 ? 1 : -1;
-          const distance = (window.innerWidth * 0.6) + (index * 100);
           
+          // Use functional value for x so it recalculates on resize
           gsap.to(shape, {
-            x: direction * distance,
+            x: () => direction * ((window.innerWidth * 0.6) + (index * 100)),
             ease: 'none',
             scrollTrigger: {
               trigger: sectionRef.current,
               start: 'top bottom',
               end: 'bottom top',
               scrub: 1,
+              invalidateOnRefresh: true, // Key: Recalculate values on resize
             }
           });
         }
       });
     }
 
-    // Circle expansion animation
+    // Circle expansion animation using matchMedia for robust responsiveness
     if (typeof window !== 'undefined' && timelineRef.current) {
-      experiences.forEach((exp, index) => {
-        const circle = document.querySelector(`.expanding-circle-${index}`);
-        if (!circle) return;
-
-        const content = circle.querySelector(`.${styles.itemContent}`);
-
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: circle,
-            start: `top ${80 - (index * 20)}%`,  // First starts at bottom, others progressively earlier
-            end: `top ${10 - (index * 30)}%`,         // First ends at 10%, others progressively earlier
-            scrub: 1.5,
-            markers: false, 
-          }
-        });
-
-        // 1. Expand circle horizontally from 24px to full width
-        tl.to(circle, {
-          width: 900,
-          borderRadius: '16px',
-          background: 'rgba(255, 255, 255, 0.03)',
-          backdropFilter: 'blur(10px)',
-          border: '1px solid rgba(255, 255, 255, 0.1)',
-          boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)',
-          marginBottom: index < experiences.length - 1 ? 48 : 0,
-          duration: 0.5,
-        })
-        // 2. Smoothly reveal content vertically (no jerk)
-        .to(content, {
-          opacity: 1,
-          maxHeight: 1000,
-          paddingTop: '2rem',
-          paddingBottom: '2rem',
-          duration: 0.5,
-        }, '-=0.2'); // Start slightly before horizontal expansion ends
+      ScrollTrigger.matchMedia({
+        // Desktop
+        "(min-width: 960px)": function() {
+          setupAnimations(900);
+        },
+        // Mobile/Tablet
+        "(max-width: 959px)": function() {
+          setupAnimations("calc(100vw - 32px)");
+        } 
       });
+
+      function setupAnimations(targetWidth) {
+        experiences.forEach((exp, index) => {
+          const circle = document.querySelector(`.expanding-circle-${index}`);
+          if (!circle) return;
+
+          const content = circle.querySelector(`.${styles.itemContent}`);
+
+          const tl = gsap.timeline({
+            scrollTrigger: {
+              trigger: circle,
+              start: `top ${80 - (index * 20)}%`,
+              end: `top ${10 - (index * 30)}%`,
+              scrub: 1.5,
+              markers: false, 
+            }
+          });
+
+          // 1. Expand circle horizontally
+          tl.to(circle, {
+            width: targetWidth,
+            borderRadius: '16px',
+            background: 'rgba(255, 255, 255, 0.03)',
+            backdropFilter: 'blur(10px)',
+            border: '1px solid rgba(255, 255, 255, 0.1)',
+            boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)',
+            marginBottom: index < experiences.length - 1 ? 48 : 0,
+            duration: 0.5,
+          })
+          // 2. Smoothly reveal content vertically
+          .to(content, {
+            opacity: 1,
+            maxHeight: 1000,
+            paddingTop: '2rem',
+            paddingBottom: '2rem',
+            duration: 0.5,
+          }, '-=0.2');
+        });
+      }
     }
 
     return () => {

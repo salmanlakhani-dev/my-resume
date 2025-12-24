@@ -26,7 +26,8 @@
 .expandingCircle {
   position: relative;
   width: 24px;
-  min-height: 24px;  /* Use min-height instead of fixed height */
+  min-height: 24px;
+  /* Use min-height instead of fixed height */
   border-radius: 50%;
   background: var(--gradient-primary);
   box-shadow: 0 0 30px rgba(99, 102, 241, 0.8);
@@ -172,24 +173,35 @@
 }
 
 @media (max-width: 768px) {
-  .timeline::before {
-    left: 20px;
+  .timelineLine {
+    /* Keep centered or adjust if needed, but user asked for centers */
+    /* If we want it strictly centered like desktop, we don't need to override .timelineLine left:50% */
   }
-  
-  .experienceItem::before {
-    left: 20px;
+
+  /* Revert expanding circle to center */
+  .expandingCircle {
+    margin: 0 auto 24px auto;
   }
-  
+
+
+
+  /* Hide connector on mobile as before */
   .connector {
     display: none;
   }
-  
+
   .experienceHeader {
     flex-direction: column;
     align-items: flex-start;
+    gap: 0.5rem;
   }
-  
+
   .duration {
     align-self: flex-start;
+    font-size: 0.85rem;
+  }
+
+  .itemContent {
+    padding: 1rem 1rem;
   }
 }

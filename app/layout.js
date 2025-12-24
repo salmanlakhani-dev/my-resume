@@ -25,14 +25,19 @@ export const metadata = {
   },
 }
 
+import MouseTrailer from '@/components/MouseTrailer'
+
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${outfit.variable} ${unbounded.variable}`}>
-      <head>
+       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
-      <body>{children}</body>
+      <body>
+        <MouseTrailer />
+        {children}
+      </body>
     </html>
   )
 }
