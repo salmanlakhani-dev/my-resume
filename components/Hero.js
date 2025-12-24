@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { animateHero } from '@/lib/animations';
 import styles from './Hero.module.css';
 import SarcasticPopup from './SarcasticPopup';
+import GlitchProfile from './GlitchProfile';
 
 export default function Hero() {
   const heroRef = useRef(null);
@@ -49,18 +50,8 @@ export default function Hero() {
       <div className={styles.heroBackground} ref={bgRef}></div>
       <div className="container">
         <div className={styles.heroContent}>
-          <div className={styles.heroImageWrapper}>
-            <div className={`${styles.heroImageContainer} hero-image`}>
-              <Image
-                src="/salman.jpg"
-                alt="Salman Lakhani"
-                width={300}
-                height={300}
-                className={styles.profileImage}
-                priority
-              />
-              <div className={styles.imageGlow}></div>
-            </div>
+          <div className={`${styles.heroImageWrapper} hero-image`}>
+            <GlitchProfile />
           </div>
 
           <div className={styles.heroText}>
