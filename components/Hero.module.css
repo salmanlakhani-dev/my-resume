@@ -37,15 +37,22 @@
   right: 0;
   bottom: 0;
   background: radial-gradient(circle at 50% 50%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
-              radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
-              radial-gradient(circle at 20% 80%, rgba(236, 72, 153, 0.15) 0%, transparent 50%);
-  animation: pulse 8s ease-in-out infinite;
+    radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 20% 80%, rgba(236, 72, 153, 0.15) 0%, transparent 50%);
+  animation: pulse 3s ease-in-out infinite;
   z-index: 1;
 }
 
 @keyframes pulse {
-  0%, 100% { opacity: 0.5; }
-  50% { opacity: 0.8; }
+
+  0%,
+  100% {
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 0.8;
+  }
 }
 
 .heroContent {
@@ -64,8 +71,8 @@
 
 .heroImageContainer {
   position: relative;
-  width: 300px;
-  height: 300px;
+  width: 250px;
+  height: 250px;
   border-radius: 50%;
   overflow: hidden;
   padding: 4px;
@@ -105,12 +112,21 @@
 }
 
 @keyframes rotate {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .heroText {
-  max-width: 800px;
+  max-width: 1000px;
+}
+
+.heroText h2 {
+  margin: 0;
 }
 
 .subtitle {
@@ -148,23 +164,27 @@
 @media (max-width: 768px) {
   .hero {
     padding: 1rem;
-    min-height: 100dvh; /* Better mobile viewport handling */
-    padding-top: 4rem; /* Additional top padding for mobile */
+    min-height: 100dvh;
+    /* Better mobile viewport handling */
+    padding-top: 4rem;
+    /* Additional top padding for mobile */
   }
 
   .heroImageContainer {
     width: 180px;
     height: 180px;
   }
-  
+
   .heroContent {
     gap: 1.5rem;
   }
-  
+
   .heroText h1 {
-    font-size: 2rem; /* Ensure main heading isn't too huge */
+    font-size: 1.5rem;
+    /* Ensure main heading isn't too huge */
     line-height: 1.2;
   }
+
 
   .subtitle {
     font-size: 1.25rem;
@@ -176,13 +196,13 @@
     margin-bottom: 1.5rem;
     padding: 0 0.5rem;
   }
-  
+
   .ctaButtons {
     flex-direction: column;
     width: 100%;
     gap: 0.75rem;
   }
-  
+
   .btnSecondary {
     width: 100%;
     padding: 0.8rem;

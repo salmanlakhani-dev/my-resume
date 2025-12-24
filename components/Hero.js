@@ -52,15 +52,16 @@ export default function Hero() {
           </div>
           
           <div className={styles.heroText}>
-            <h1 className="hero-title">
-              Salman Lakhani
+            <h1>
+      Salman Lakhani
             </h1>
             <h2 className={`${styles.subtitle} hero-subtitle`}>
               Web Developer
             </h2>
             <p className={`${styles.description} hero-description`}>
-              Crafting exceptional digital experiences with modern web technologies.
-              Passionate about creating beautiful, functional, and user-centric applications.
+              &quot;Hey, I&apos;m Salman. I was coding before AI could even finish a sentence. 
+              If you&apos;re terrified it&apos;s going to replace you, you clearly haven&apos;t seen it try to debug itself. 
+              If you&apos;re not—welcome to the community.&quot;
             </p>
             <div className={`${styles.ctaButtons} hero-cta`}>
               <button 
